@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->dateTime('date')->nullable();
             $table->string('type');
-            $table->string('memo');
-            $table->string('venue');
-            $table->string('website_url');
+            $table->string('memo')->nullable();
+            $table->string('venue')->nullable();
+            $table->string('website_url')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
@@ -27,7 +27,7 @@ return new class extends Migration
         Schema::table('events', function (Blueprint $table) {
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');
-            $table->foreignId('deleted_by')->constrained('users')->nullable();
+            $table->foreignId('deleted_by')->nullable()->constrained('users');
         });
     }
 
