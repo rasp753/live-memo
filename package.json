@@ -4,7 +4,8 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix"
+        "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix",
+        "heroku-postbuild": "npm run build"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
