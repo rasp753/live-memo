@@ -36,6 +36,7 @@ class EventController extends Controller
         $input['date'] = $date->toDateTimeString();
         $input['created_by'] = $request->user()->id;
         $input['updated_by'] = $request->user()->id;
+        print_r($input);
         $event->fill($input)->save();
         return redirect()->route('events.show', ['event' => $event->id]);
     }

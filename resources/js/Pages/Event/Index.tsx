@@ -15,7 +15,6 @@ import { Event } from '@/types/Event';
 
 const Index = (props: { auth: { user: User }; events: Event[] }) => {
     const { events } = props;
-    console.log(events);
 
     return (
         <Authenticated>
