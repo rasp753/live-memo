@@ -2,6 +2,7 @@ import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -102,6 +103,12 @@ export default function Login({
                     </PrimaryButton>
                 </div>
             </form>
+            <div className="mt-4 flex items-center justify-end">
+                <span className="text-sm">New to Live Memo?</span>
+                <SecondaryButton className="ms-2">
+                    <Link href={route('register')}>Sign up</Link>
+                </SecondaryButton>
+            </div>
         </GuestLayout>
     );
 }
