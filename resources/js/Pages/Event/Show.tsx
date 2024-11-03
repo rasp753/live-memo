@@ -23,9 +23,11 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
 
     return (
         <Authenticated>
-            <div className="m-4 space-y-4">
-                <div>
-                    <h1>イベント詳細</h1>
+            <div className="mx-auto my-4 max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8">
+                <div className="flex h-10 items-center">
+                    <div className="text-2xl">
+                        <h1>イベント詳細</h1>
+                    </div>
                 </div>
                 <div className="space-y-2">
                     <Card key={event.id}>

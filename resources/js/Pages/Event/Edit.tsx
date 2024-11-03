@@ -33,7 +33,6 @@ import {
     PopoverTrigger,
 } from '@/Components/ui/popover';
 import { Textarea } from '@/Components/ui/textarea';
-import { H2 } from '@/Components/ui/typography';
 import { cn } from '@/lib/utils';
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 
@@ -66,9 +65,11 @@ const Create = (props: {
 
     return (
         <Authenticated>
-            <div className="m-4 space-y-4">
-                <div>
-                    <H2>イベント編集</H2>
+            <div className="mx-auto my-4 max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8">
+                <div className="flex h-10 items-center">
+                    <div className="mr-auto text-2xl">
+                        <h1>イベント編集</h1>
+                    </div>
                 </div>
                 <div>
                     <Form {...form}>
