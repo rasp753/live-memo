@@ -1,7 +1,7 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm as inertiaUseForm, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -43,7 +43,6 @@ const Create = (props: {
     event: Event;
 }) => {
     const { event } = props;
-    const { setData, put } = inertiaUseForm();
     const form = useForm({
         resolver: zodResolver(EventSchema),
         defaultValues: {

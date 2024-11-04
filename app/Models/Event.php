@@ -20,10 +20,12 @@ class Event extends Model
     {
         return $this->hasMany(Todos::class);
     }
+
     public function dates(): HasMany
     {
         return $this->hasMany(Date::class);
     }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'event_tags');

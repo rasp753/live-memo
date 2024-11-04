@@ -5,31 +5,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class EventController extends Controller
 {
-    public function index(Event $event)
+    public function index(Request $request, Event $event): Response
     {
         return Inertia::render('Event/Index', [
-            'events' => $event->get()
+            'events' => $event->where('created_by', $request->user()->id)->get(),
         ]);
     }
 
-    public function show(Event $event)
+    public function show(Event $event): Response
     {
         return Inertia::render('Event/Show', [
-            'event' => $event
+            'event' => $event,
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Event/Create');
     }
 
-    public function store(EventRequest $request, Event $event)
+    public function store(EventRequest $request, Event $event): RedirectResponse
     {
         $input = $request->all();
         $date = new Carbon($request->date);
@@ -38,13 +40,14 @@ class EventController extends Controller
         $input['updated_by'] = $request->user()->id;
         print_r($input);
         $event->fill($input)->save();
+
         return redirect()->route('events.show', ['event' => $event->id]);
     }
 
-    public function edit(Event $event)
+    public function edit(Event $event): Response
     {
         return Inertia::render('Event/Edit', [
-            'event' => $event
+            'event' => $event,
         ]);
     }
 
@@ -55,6 +58,7 @@ class EventController extends Controller
         $input['date'] = $date->toDateTimeString();
         $input['updated_by'] = $request->user()->id;
         $event->fill($input)->save();
+
         return redirect()->route('events.show', ['event' => $event->id]);
     }
 
@@ -62,6 +66,7 @@ class EventController extends Controller
     {
         $input['deleted_by'] = $request->user()->id;
         $event->fill($input)->delete();
+
         return redirect()->route('events.index');
     }
 }
