@@ -2,6 +2,7 @@ import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
 import {
     Card,
+    CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
@@ -12,6 +13,7 @@ import { User } from '@/types';
 import { Link, router } from '@inertiajs/react';
 
 import { Event } from '@/types/Event';
+import { ExternalLinkIcon } from '@radix-ui/react-icons';
 
 const Show = (props: { auth: { user: User }; event: Event }) => {
     const { event } = props;
@@ -47,6 +49,42 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                 ))}
                             </div>
                         </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                {event.venue && (
+                                    <div>
+                                        <h3 className="text-sm text-muted-foreground">
+                                            会場
+                                        </h3>
+                                        <p>{event.venue}</p>
+                                    </div>
+                                )}
+                                {event.website_url && (
+                                    <div>
+                                        <h3 className="text-sm text-muted-foreground">
+                                            WebサイトURL
+                                        </h3>
+                                        <a
+                                            href={event.website_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-1"
+                                        >
+                                            {event.website_url}
+                                            <ExternalLinkIcon className="inline" />
+                                        </a>
+                                    </div>
+                                )}
+                                {event.memo && (
+                                    <div>
+                                        <h3 className="text-sm text-muted-foreground">
+                                            メモ
+                                        </h3>
+                                        <p>{event.memo}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </CardContent>
                     </Card>
                 </div>
                 <div className="flex space-x-2">
