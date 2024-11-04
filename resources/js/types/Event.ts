@@ -8,6 +8,7 @@ export type Event = {
     venue: string;
     website_url: string;
     memo: string;
+    tags: string[] | { name: string }[];
 };
 
 export const EventSchema = z.object({
@@ -15,7 +16,7 @@ export const EventSchema = z.object({
     date: z.date().optional(),
     type: z.string().min(1, { message: 'イベントの種類を選択してください' }),
     venue: z.string().optional(),
-    websiteUrl: z.string().optional(),
+    website_url: z.string().optional(),
     memo: z.string().optional(),
 });
 

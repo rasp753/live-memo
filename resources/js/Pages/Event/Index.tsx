@@ -39,10 +39,20 @@ const Index = (props: { auth: { user: User }; events: Event[] }) => {
                                                 event.date,
                                             ).toLocaleString()}
                                         </CardDescription>
-                                        <div>
-                                            <Badge variant="outline">
+                                        <div className="flex gap-2">
+                                            <Badge variant="default">
                                                 {event.type}
                                             </Badge>
+                                            {event.tags.map((tag, index) => (
+                                                <Badge
+                                                    key={index}
+                                                    variant="outline"
+                                                >
+                                                    {typeof tag === 'string'
+                                                        ? tag
+                                                        : tag.name}
+                                                </Badge>
+                                            ))}
                                         </div>
                                     </CardHeader>
                                 </Card>

@@ -3,10 +3,11 @@ import { User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from '@inertiajs/react';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
 import { Calendar } from '@/Components/ui/calendar';
 import {
@@ -26,6 +27,7 @@ import {
     FormMessage,
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
     Popover,
     PopoverContent,
@@ -33,11 +35,12 @@ import {
 } from '@/Components/ui/popover';
 import { Textarea } from '@/Components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
+import { CaretSortIcon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { Event, EventSchema, eventTypes } from '@/types/Event';
 
-const Create = (props: {
+const Edit = (props: {
     auth: { user: User };
     errors: Record<string, string>;
     event: Event;
@@ -50,14 +53,41 @@ const Create = (props: {
             date: event.date ? new Date(event.date) : new Date(),
             type: event.type,
             venue: event.venue ? event.venue : '',
-            websiteUrl: event.website_url ? event.website_url : '',
+            website_url: event.website_url ? event.website_url : '',
             memo: event.memo ? event.memo : '',
         },
     });
 
     function onSubmit(values: z.infer<typeof EventSchema>) {
-        router.put(`/events/${event.id}`, values);
+        const data = { ...values, tags };
+        router.put(`/events/${event.id}`, data);
     }
+
+    function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
+            event.preventDefault();
+            addTag(event);
+        }
+    }
+
+    function addTag(event: React.KeyboardEvent<HTMLInputElement>) {
+        const input = event.target as HTMLInputElement;
+        const value = input.value.toUpperCase();
+        if (!value) return;
+        if (tags.includes(value)) {
+            setTagInputErrorMessage('タグが重複しています');
+            return;
+        }
+        setTags([...tags, value]);
+        input.value = '';
+        setTagInputErrorMessage('');
+    }
+
+    const [tags, setTags] = useState<string[]>(
+        event.tags.map((tag) => (typeof tag === 'string' ? tag : tag.name)),
+    );
+
+    const [tagInputErrorMessage, setTagInputErrorMessage] = useState('');
 
     return (
         <Authenticated>
@@ -90,6 +120,52 @@ const Create = (props: {
                                     </FormItem>
                                 )}
                             />
+
+                            <div className="space-y-2">
+                                <Label className="block" htmlFor="tags">
+                                    タグ
+                                </Label>
+                                <div
+                                    id="tags"
+                                    className="flex flex-wrap items-center gap-2"
+                                >
+                                    {tags.map((tag, index) => (
+                                        <Badge
+                                            key={index}
+                                            variant="outline"
+                                            className=""
+                                        >
+                                            <Button
+                                                variant="ghost"
+                                                className="mr-1 h-4 p-0"
+                                                onClick={() => {
+                                                    console.log(tag);
+                                                    setTags(
+                                                        tags.filter(
+                                                            (t) => t !== tag,
+                                                        ),
+                                                    );
+                                                }}
+                                            >
+                                                <Cross2Icon className="" />
+                                            </Button>
+                                            {tag}
+                                        </Badge>
+                                    ))}
+                                    <Input
+                                        className="inline-block w-60"
+                                        placeholder="タグを追加"
+                                        onKeyDown={handleKeyDown}
+                                    />
+                                    <span className="text-sm text-destructive">
+                                        {tagInputErrorMessage}
+                                    </span>
+                                </div>
+                                <span className="text-sm text-muted-foreground">
+                                    小文字は大文字に変換されます
+                                </span>
+                            </div>
+
                             <FormField
                                 control={form.control}
                                 name="date"
@@ -245,7 +321,7 @@ const Create = (props: {
                             />
                             <FormField
                                 control={form.control}
-                                name="websiteUrl"
+                                name="website_url"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>WebサイトURLなど</FormLabel>
@@ -287,4 +363,4 @@ const Create = (props: {
     );
 };
 
-export default Create;
+export default Edit;

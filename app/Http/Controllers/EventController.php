@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
+use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,14 +16,14 @@ class EventController extends Controller
     public function index(Request $request, Event $event): Response
     {
         return Inertia::render('Event/Index', [
-            'events' => $event->where('created_by', $request->user()->id)->get(),
+            'events' => $event->where('created_by', $request->user()->id)->with('tags')->get(),
         ]);
     }
 
     public function show(Event $event): Response
     {
         return Inertia::render('Event/Show', [
-            'event' => $event,
+            'event' => $event->load('tags'),
         ]);
     }
 
@@ -38,8 +39,9 @@ class EventController extends Controller
         $input['date'] = $date->toDateTimeString();
         $input['created_by'] = $request->user()->id;
         $input['updated_by'] = $request->user()->id;
-        print_r($input);
         $event->fill($input)->save();
+
+        $this->setTagToEvent($event, $request->tags);
 
         return redirect()->route('events.show', ['event' => $event->id]);
     }
@@ -47,7 +49,7 @@ class EventController extends Controller
     public function edit(Event $event): Response
     {
         return Inertia::render('Event/Edit', [
-            'event' => $event,
+            'event' => $event->load('tags'),
         ]);
     }
 
@@ -59,14 +61,28 @@ class EventController extends Controller
         $input['updated_by'] = $request->user()->id;
         $event->fill($input)->save();
 
+        $this->setTagToEvent($event, $request->tags);
+
         return redirect()->route('events.show', ['event' => $event->id]);
     }
 
     public function delete(Request $request, Event $event)
     {
         $input['deleted_by'] = $request->user()->id;
-        $event->fill($input)->delete();
+        $input['deleted_at'] = Carbon::now();
+        $event->fill($input)->save();
 
         return redirect()->route('events.index');
+    }
+
+    public function setTagToEvent(Event $event, array $tagTexts): void
+    {
+        $event->tags()->detach();
+
+        $tags = collect($tagTexts)->map(function ($tagText) {
+            return Tag::firstOrCreate(['name' => $tagText]);
+        });
+
+        $event->tags()->attach($tags->pluck('id')->toArray());
     }
 }

@@ -10,13 +10,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tag extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+
+    public $timestamps = false;
 
     /**
      * Relations
      */
     public function events(): BelongsToMany
     {
-        return $this->belongsToMany(Event::class, 'event_tags');
+        return $this->belongsToMany(Event::class, 'event_tags', 'tag_id', 'event_id');
     }
+
+    protected $fillable = [
+        'name',
+    ];
 }

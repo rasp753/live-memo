@@ -3,7 +3,7 @@ import { User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from '@inertiajs/react';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -33,7 +33,11 @@ import {
 } from '@/Components/ui/popover';
 import { Textarea } from '@/Components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
+import { CaretSortIcon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { Calendar as CalendarIcon } from 'lucide-react';
+
+import { Badge } from '@/Components/ui/badge';
+import { Label } from '@/components/ui/label';
 
 import { EventSchema, eventTypes } from '@/types/Event';
 
@@ -48,14 +52,39 @@ const Create = (props: {
             date: new Date(),
             type: '',
             venue: '',
-            websiteUrl: '',
+            website_url: '',
             memo: '',
         },
     });
 
     function onSubmit(values: z.infer<typeof EventSchema>) {
-        router.post('/events', values);
+        const data = { ...values, tags };
+        router.post('/events', data);
     }
+
+    function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
+            event.preventDefault();
+            addTag(event);
+        }
+    }
+
+    function addTag(event: React.KeyboardEvent<HTMLInputElement>) {
+        const input = event.target as HTMLInputElement;
+        const value = input.value.toUpperCase();
+        if (!value) return;
+        if (tags.includes(value)) {
+            setTagInputErrorMessage('タグが重複しています');
+            return;
+        }
+        setTags([...tags, value]);
+        input.value = '';
+        setTagInputErrorMessage('');
+    }
+
+    const [tags, setTags] = useState<string[]>([]);
+
+    const [tagInputErrorMessage, setTagInputErrorMessage] = useState('');
 
     return (
         <Authenticated>
@@ -82,12 +111,58 @@ const Create = (props: {
                                             {...field}
                                         />
                                         <FormMessage />
-                                        <span className="text-red-600">
+                                        <span className="text-destructive">
                                             {props.errors.name}
                                         </span>
                                     </FormItem>
                                 )}
                             />
+
+                            <div className="space-y-2">
+                                <Label className="block" htmlFor="tags">
+                                    タグ
+                                </Label>
+
+                                <div
+                                    id="tags"
+                                    className="flex flex-wrap items-center gap-2"
+                                >
+                                    {tags.map((tag, index) => (
+                                        <Badge
+                                            key={index}
+                                            variant="outline"
+                                            className=""
+                                        >
+                                            <Button
+                                                variant="ghost"
+                                                className="mr-1 h-4 p-0"
+                                                onClick={() => {
+                                                    console.log(tag);
+                                                    setTags(
+                                                        tags.filter(
+                                                            (t) => t !== tag,
+                                                        ),
+                                                    );
+                                                }}
+                                            >
+                                                <Cross2Icon className="" />
+                                            </Button>
+                                            {tag}
+                                        </Badge>
+                                    ))}
+                                    <Input
+                                        className="inline-block w-60"
+                                        placeholder="タグを追加"
+                                        onKeyDown={handleKeyDown}
+                                    />
+                                    <span className="text-sm text-destructive">
+                                        {tagInputErrorMessage}
+                                    </span>
+                                </div>
+                                <span className="text-sm text-muted-foreground">
+                                    小文字は大文字に変換されます
+                                </span>
+                            </div>
 
                             <FormField
                                 control={form.control}
@@ -133,7 +208,7 @@ const Create = (props: {
                                         </div>
 
                                         <FormMessage />
-                                        <span className="text-red-600">
+                                        <span className="text-destructive">
                                             {props.errors.date}
                                         </span>
                                     </FormItem>
@@ -222,7 +297,7 @@ const Create = (props: {
                                         </div>
 
                                         <FormMessage />
-                                        <span className="text-red-600">
+                                        <span className="text-destructive">
                                             {props.errors.type}
                                         </span>
                                     </FormItem>
@@ -239,7 +314,7 @@ const Create = (props: {
                                             {...field}
                                         />
                                         <FormMessage />
-                                        <span className="text-red-600">
+                                        <span className="text-destructive">
                                             {props.errors.venue}
                                         </span>
                                     </FormItem>
@@ -247,7 +322,7 @@ const Create = (props: {
                             />
                             <FormField
                                 control={form.control}
-                                name="websiteUrl"
+                                name="website_url"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>WebサイトURL・SNS</FormLabel>
@@ -256,7 +331,7 @@ const Create = (props: {
                                             {...field}
                                         />
                                         <FormMessage />
-                                        <span className="text-red-600">
+                                        <span className="text-destructive">
                                             {props.errors.website_url}
                                         </span>
                                     </FormItem>
@@ -274,7 +349,7 @@ const Create = (props: {
                                             {...field}
                                         />
                                         <FormMessage />
-                                        <span className="text-red-600">
+                                        <span className="text-destructive">
                                             {props.errors.memo}
                                         </span>
                                     </FormItem>

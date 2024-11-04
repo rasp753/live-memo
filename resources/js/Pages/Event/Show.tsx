@@ -36,8 +36,15 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                             <CardDescription>
                                 {new Date(event.date).toLocaleString()}
                             </CardDescription>
-                            <div>
-                                <Badge variant="outline">{event.type}</Badge>
+                            <div className="flex gap-1">
+                                <Badge variant="default">{event.type}</Badge>
+                                {event.tags.map((tag, index) => (
+                                    <Badge key={index} variant="outline">
+                                        {typeof tag === 'string'
+                                            ? tag
+                                            : tag.name}
+                                    </Badge>
+                                ))}
                             </div>
                         </CardHeader>
                     </Card>

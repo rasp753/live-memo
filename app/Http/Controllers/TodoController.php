@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class TodosController extends Controller
+class TodoController extends Controller
 {
     //
 }

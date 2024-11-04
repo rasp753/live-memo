@@ -20,15 +20,13 @@ class Event extends Model
     {
         return $this->hasMany(Todos::class);
     }
-
     public function dates(): HasMany
     {
         return $this->hasMany(Date::class);
     }
-
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class, 'event_tags');
+        return $this->belongsToMany(Tag::class, 'event_tags', 'event_id', 'tag_id');
     }
 
     protected $fillable = [
@@ -41,6 +39,7 @@ class Event extends Model
         'created_by',
         'updated_by',
         'deleted_by',
+        'deleted_at',
     ];
 
     protected function casts(): array
