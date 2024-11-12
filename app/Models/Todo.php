@@ -10,11 +10,31 @@ class Todo extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     /**
      * Relations
      */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    protected $fillable = [
+        'id',
+        'user_id',
+        'event_id',
+        'name',
+        'done',
+        'deadline',
+        'flag',
+        'memo',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'deadline' => 'datetime',
+        ];
     }
 }

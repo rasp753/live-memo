@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Todo } from './Todo';
 
 export type Event = {
     id: number;
@@ -9,6 +10,7 @@ export type Event = {
     website_url: string;
     memo: string;
     tags: string[] | { name: string }[];
+    todos: Todo[];
 };
 
 export const EventSchema = z.object({

@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('memo')->nullable();
-            $table->boolean('flag')->default(false);
+            $table->boolean('done')->default(false);
             $table->dateTime('deadline')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('done_at')->nullable();
+            $table->boolean('flag')->default(false);
+            $table->string('memo')->nullable();
         });
 
         Schema::table('todos', function (Blueprint $table) {

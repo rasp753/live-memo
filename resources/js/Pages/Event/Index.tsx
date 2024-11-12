@@ -37,7 +37,7 @@ const Index = (props: { auth: { user: User }; events: Event[] }) => {
                                         <CardDescription>
                                             {new Date(
                                                 event.date,
-                                            ).toLocaleString()}
+                                            ).toLocaleDateString()}
                                         </CardDescription>
                                         <div className="flex gap-2">
                                             <Badge variant="default">

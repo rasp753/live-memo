@@ -1,7 +1,7 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -354,7 +354,18 @@ const Edit = (props: {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">送信</Button>
+                            <div className="flex">
+                                <Button
+                                    variant="outline"
+                                    className="mr-auto"
+                                    asChild
+                                >
+                                    <Link href={`/events/${event.id}`}>
+                                        戻る
+                                    </Link>
+                                </Button>
+                                <Button type="submit">完了</Button>
+                            </div>
                         </form>
                     </Form>
                 </div>

@@ -23,7 +23,7 @@ class EventController extends Controller
     public function show(Event $event): Response
     {
         return Inertia::render('Event/Show', [
-            'event' => $event->load('tags'),
+            'event' => $event->load('tags')->load('todos'),
         ]);
     }
 
