@@ -1,7 +1,7 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
 import { Link, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
@@ -116,11 +116,8 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                         <CardContent className="space-y-2">
                             <Separator />
                             {todos.map((todo) => (
-                                <>
-                                    <div
-                                        className="flex items-center"
-                                        key={todo.id}
-                                    >
+                                <Fragment key={todo.id}>
+                                    <div className="flex items-center">
                                         <Checkbox
                                             className="m-2 size-5"
                                             checked={todo.done}
@@ -382,10 +379,8 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                         </Popover>
                                     </div>
 
-                                    <Separator
-                                        key={'s-' + todo.id.toString()}
-                                    />
-                                </>
+                                    <Separator />
+                                </Fragment>
                             ))}
 
                             <div className="flex gap-2">
