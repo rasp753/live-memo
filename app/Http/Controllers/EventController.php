@@ -17,7 +17,7 @@ class EventController extends Controller
     public function index(Request $request, Event $event): Response
     {
         return Inertia::render('Event/Index', [
-            'events' => $event->where('created_by', $request->user()->id)->with('tags')->get(),
+            'events' => $event->where('created_by', $request->user()->id)->orderBy('date', 'desc')->with('tags')->get(),
         ]);
     }
 
@@ -93,6 +93,37 @@ class EventController extends Controller
         return Inertia::render('Home', [
             'event' => $event->where('created_by', $request->user()->id)->whereDate('date', '>=', Carbon::yesterday()->toDateTimeString())->orderBy('date', 'asc')->with('tags')->first(),
             'todos' => $todo->where('user_id', $request->user()->id)->whereDate('deadline', '>=', Carbon::yesterday()->subdays(30)->toDateTimeString())->whereDate('deadline', '<=', Carbon::yesterday()->toDateTimeString())->orderBy('deadline', 'desc')->with('event')->get(),
+        ]);
+    }
+
+    public function search(Request $request, Event $event): Response
+    {
+        $events = $event->where('created_by', $request->user()->id);
+
+        $keywords = preg_split('/[\s,]+/', $request->keyword);
+
+        foreach ($keywords as $keyword) {
+            if (str_starts_with($keyword, '#')) {
+                $tag = Tag::where('name', substr($keyword, 1))->first();
+                if ($tag) {
+                    $events = $events->whereHas('tags', function ($query) use ($tag) {
+                        $query->where('tags.id', $tag->id);
+                    });
+                }
+            } else if (str_starts_with($keyword, '@')) {
+                $events = $events->where('venue', 'like', '%' . substr($keyword, 1) . '%');
+            } else if (str_starts_with($keyword, 'type:')) {
+                $events = $events->where('type', substr($keyword, 5));
+            } else {
+                $events = $events->where('name', 'like', '%' . $keyword . '%');
+            }
+        }
+
+        $events = $events->orderBy('date', 'desc')->with('tags')->get();
+
+        return Inertia::render('Event/Index', [
+            'events' => $events,
+            'keyword' => $request->keyword,
         ]);
     }
 }

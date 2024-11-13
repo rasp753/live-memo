@@ -1,7 +1,9 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { differenceInCalendarDays } from 'date-fns';
+import { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
@@ -12,10 +14,55 @@ import {
     CardTitle,
 } from '@/Components/ui/card';
 
+import { Input } from '@/Components/ui/input';
 import { Event } from '@/types/Event';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
-const Index = (props: { auth: { user: User }; events: Event[] }) => {
-    const { events } = props;
+const Index = (props: {
+    auth: { user: User };
+    events: Event[];
+    keyword: string;
+}) => {
+    const [events, setEvents] = useState<Event[]>(props.events);
+    const [keyword, setKeyword] = useState(props.keyword ? props.keyword : '');
+    const [isShowingUpcomingEvents, setIsShowingUpcomingEvents] =
+        useState(true);
+    const [filteredEvents, setFilteredEvents] = useState<Event[]>(
+        isShowingUpcomingEvents
+            ? events
+                  .filter((event) => {
+                      return (
+                          differenceInCalendarDays(
+                              new Date(event.date),
+                              new Date(),
+                          ) >= 0
+                      );
+                  })
+                  .toReversed()
+            : events.filter((event) => {
+                  return (
+                      differenceInCalendarDays(
+                          new Date(event.date),
+                          new Date(),
+                      ) < 0
+                  );
+              }),
+    );
+
+    console.log(props);
+
+    const searchEvents = useDebouncedCallback((keyword: string) => {
+        router.get(
+            '/events/search',
+            { keyword: keyword },
+            {
+                onSuccess: (page) => {
+                    setEvents(page.props.events);
+                },
+                preserveState: true,
+            },
+        );
+    }, 500);
 
     return (
         <Authenticated>
@@ -28,8 +75,75 @@ const Index = (props: { auth: { user: User }; events: Event[] }) => {
                         <Link href="/events/create">新規イベント</Link>
                     </Button>
                 </div>
+                <div>
+                    <div className="flex items-center">
+                        <MagnifyingGlassIcon className="size-8" />
+                        <Input
+                            placeholder="検索..."
+                            value={keyword}
+                            onChange={(e) => {
+                                setKeyword(e.target.value);
+                                searchEvents(e.target.value);
+                            }}
+                        />
+                    </div>
+                    <p className="ml-10 text-sm text-muted-foreground">
+                        半角スペース区切りでAND検索, #タグ名でタグ検索,
+                        @会場名で会場名検索, type:種類で種類検索(live,
+                        exhibition, cafe, goods)
+                    </p>
+                </div>
+                <div className="ml-8 flex gap-8">
+                    {isShowingUpcomingEvents ? (
+                        <>
+                            <p>開催前・当日</p>
+                            <p
+                                className="text-muted-foreground"
+                                onClick={() => {
+                                    setIsShowingUpcomingEvents(false);
+                                    setFilteredEvents(
+                                        events.filter((event) => {
+                                            return (
+                                                differenceInCalendarDays(
+                                                    new Date(event.date),
+                                                    new Date(),
+                                                ) < 0
+                                            );
+                                        }),
+                                    );
+                                }}
+                            >
+                                開催後
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <p
+                                className="text-muted-foreground"
+                                onClick={() => {
+                                    setIsShowingUpcomingEvents(true);
+                                    setFilteredEvents(
+                                        events
+                                            .filter((event) => {
+                                                return (
+                                                    differenceInCalendarDays(
+                                                        new Date(event.date),
+                                                        new Date(),
+                                                    ) >= 0
+                                                );
+                                            })
+                                            .toReversed(),
+                                    );
+                                }}
+                            >
+                                開催前・当日
+                            </p>
+                            <p>開催後</p>
+                        </>
+                    )}
+                </div>
                 <div className="space-y-2">
-                    {events.map((event) => (
+                    {filteredEvents.map((event) => (
                         <div key={event.id}>
                             <Link href={`/events/${event.id}`}>
                                 <Card>
@@ -42,7 +156,13 @@ const Index = (props: { auth: { user: User }; events: Event[] }) => {
                                                 ).toLocaleDateString()}
                                             </CardDescription>
                                             <div className="flex flex-wrap gap-2">
-                                                <Badge variant="default">
+                                                <Badge
+                                                    variant="default"
+                                                    onClick={() => {
+                                                        setKeyword(event.type);
+                                                        return false;
+                                                    }}
+                                                >
                                                     {event.type}
                                                 </Badge>
                                                 {event.tags.map(
