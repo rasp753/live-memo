@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use App\Models\Tag;
+use App\Models\Todo;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -84,5 +85,14 @@ class EventController extends Controller
         });
 
         $event->tags()->attach($tags->pluck('id')->toArray());
+    }
+
+    public function home(Request $request, Event $event, Todo $todo): Response
+    {
+        // 本日以降で直近のイベントと１ヶ月以内に期限が来るTodoを抽出して送信
+        return Inertia::render('Home', [
+            'event' => $event->where('created_by', $request->user()->id)->whereDate('date', '>=', Carbon::yesterday()->toDateTimeString())->orderBy('date', 'asc')->with('tags')->first(),
+            'todos' => $todo->where('user_id', $request->user()->id)->whereDate('deadline', '>=', Carbon::yesterday()->subdays(30)->toDateTimeString())->whereDate('deadline', '<=', Carbon::yesterday()->toDateTimeString())->orderBy('deadline', 'desc')->with('event')->get(),
+        ]);
     }
 }

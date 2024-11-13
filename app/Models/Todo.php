@@ -35,6 +35,8 @@ class Todo extends Model
     {
         return [
             'deadline' => 'datetime',
+            'done' => 'boolean',
+            'flag' => 'boolean',
         ];
     }
 }

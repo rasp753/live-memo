@@ -1,6 +1,7 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
 import { Link, router } from '@inertiajs/react';
+import { differenceInCalendarDays } from 'date-fns';
 import { Fragment, useState } from 'react';
 
 import { Badge } from '@/Components/ui/badge';
@@ -33,6 +34,8 @@ import { Event } from '@/types/Event';
 const Show = (props: { auth: { user: User }; event: Event }) => {
     const { event } = props;
 
+    console.log(event.todos);
+
     const onEventDeleteButtonClicked = () => {
         router.delete(`/events/${event.id}`);
     };
@@ -50,22 +53,63 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                 </div>
                 <div className="space-y-2">
                     <Card key={event.id}>
-                        <CardHeader>
-                            <CardTitle>{event.name}</CardTitle>
-                            <CardDescription>
-                                {new Date(event.date).toLocaleDateString()}
-                            </CardDescription>
-                            <div className="flex gap-1">
-                                <Badge variant="default">{event.type}</Badge>
-                                {event.tags.map((tag, index) => (
-                                    <Badge key={index} variant="outline">
-                                        {typeof tag === 'string'
-                                            ? tag
-                                            : tag.name}
+                        <div className="flex items-center">
+                            <CardHeader className="mr-auto">
+                                <CardTitle>{event.name}</CardTitle>
+                                <CardDescription>
+                                    {new Date(event.date).toLocaleDateString()}
+                                </CardDescription>
+                                <div className="flex flex-wrap gap-1">
+                                    <Badge variant="default">
+                                        {event.type}
                                     </Badge>
-                                ))}
+                                    {event.tags.map((tag, index) => (
+                                        <Badge key={index} variant="outline">
+                                            {typeof tag === 'string'
+                                                ? tag
+                                                : tag.name}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </CardHeader>
+                            <div className="m-8 flex-col text-nowrap text-center">
+                                {differenceInCalendarDays(
+                                    new Date(event.date),
+                                    new Date(),
+                                ) < 0 ? (
+                                    <>
+                                        <p className="text-xl">終了後</p>
+                                        <p className="text-2xl">
+                                            {differenceInCalendarDays(
+                                                new Date(),
+                                                new Date(event.date),
+                                            )}
+                                            日
+                                        </p>
+                                    </>
+                                ) : differenceInCalendarDays(
+                                      new Date(event.date),
+                                      new Date(),
+                                  ) === 0 ? (
+                                    <>
+                                        <p className="text-2xl">本日</p>
+                                        <p className="text-2xl">開催</p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p className="text-xl">あと</p>
+                                        <p className="text-2xl">
+                                            {differenceInCalendarDays(
+                                                new Date(event.date),
+                                                new Date(),
+                                            )}
+                                            日
+                                        </p>
+                                    </>
+                                )}
                             </div>
-                        </CardHeader>
+                        </div>
+
                         <CardContent>
                             <div className="space-y-4">
                                 {event.venue && (

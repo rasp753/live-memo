@@ -1,3 +1,5 @@
+import { Event } from './Event';
+
 export type Todo = {
     id: number;
     user_id: number;
@@ -7,4 +9,5 @@ export type Todo = {
     deadline: Date | null;
     flag: boolean;
     memo: string | null;
+    event: Event;
 }
