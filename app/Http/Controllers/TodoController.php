@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TodoController extends Controller
 {
@@ -22,6 +23,8 @@ class TodoController extends Controller
                 return redirect()->route('events.show', ['event' => $event_id]);
             } elseif ($request->from === 'home') {
                 return redirect()->route('home');
+            } elseif ($request->from === 'todos.index') {
+                return redirect()->route('todos.index');
             }
         }
 
@@ -38,6 +41,8 @@ class TodoController extends Controller
                 return redirect()->route('events.show', ['event' => $event->id]);
             } elseif ($request->from === 'home') {
                 return redirect()->route('home');
+            } elseif ($request->from === 'todos.index') {
+                return redirect()->route('todos.index');
             }
         }
 
@@ -53,9 +58,18 @@ class TodoController extends Controller
                 return redirect()->route('events.show', ['event' => $event->id]);
             } elseif ($request->from === 'home') {
                 return redirect()->route('home');
+            } elseif ($request->from === 'todos.index') {
+                return redirect()->route('todos.index');
             }
         }
 
         return redirect()->route('events.show', ['event' => $event->id]);
+    }
+
+    public function index(Request $request, Todo $todo)
+    {
+        return Inertia::render('Todo/Index', [
+            'todos' => $todo->where('user_id', $request->user()->id)->orderBy('deadline', 'desc')->with('event')->get(),
+        ]);
     }
 }

@@ -43,6 +43,12 @@ export default function Authenticated({
                                 >
                                     イベント
                                 </NavLink>
+                                <NavLink
+                                    href={route('todos.index')}
+                                    active={route().current('todos.*')}
+                                >
+                                    Todo
+                                </NavLink>
                             </div>
                         </div>
 
@@ -152,6 +158,12 @@ export default function Authenticated({
                             active={route().current('events.*')}
                         >
                             イベント
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('todos.index')}
+                            active={route().current('todos.*')}
+                        >
+                            Todo
                         </ResponsiveNavLink>
                     </div>
 

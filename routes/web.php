@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
 
     // Route for todos
+    Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
     Route::post('/events/{event}/todos', [TodoController::class, 'store'])->name('todos.store');
     Route::put('/events/{event}/todos/{todo}', [TodoController::class, 'edit'])->name('todos.edit');
     Route::delete('/events/{event}/todos/{todo}', [TodoController::class, 'delete'])->name('todos.delete');
