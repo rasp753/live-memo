@@ -10,4 +10,4 @@ export type Todo = {
     flag: boolean;
     memo: string | null;
     event: Event;
-}
+};

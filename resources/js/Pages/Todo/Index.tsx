@@ -84,13 +84,17 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                             ) => {
                                                                 setTodos(
                                                                     page.props
-                                                                        .todos,
+                                                                        .todos as Todo[],
                                                                 );
                                                                 if (
                                                                     isOnlyFlagged
                                                                 ) {
                                                                     setFilteredTodos(
-                                                                        page.props.todos.filter(
+                                                                        (
+                                                                            page
+                                                                                .props
+                                                                                .todos as Todo[]
+                                                                        ).filter(
                                                                             (
                                                                                 todo,
                                                                             ) =>
@@ -102,7 +106,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                     setFilteredTodos(
                                                                         page
                                                                             .props
-                                                                            .todos,
+                                                                            .todos as Todo[],
                                                                     );
                                                                 }
                                                             },
@@ -146,13 +150,17 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                 setTodos(
                                                                                     page
                                                                                         .props
-                                                                                        .todos,
+                                                                                        .todos as Todo[],
                                                                                 );
                                                                                 if (
                                                                                     isOnlyFlagged
                                                                                 ) {
                                                                                     setFilteredTodos(
-                                                                                        page.props.todos.filter(
+                                                                                        (
+                                                                                            page
+                                                                                                .props
+                                                                                                .todos as Todo[]
+                                                                                        ).filter(
                                                                                             (
                                                                                                 todo,
                                                                                             ) =>
@@ -164,7 +172,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                     setFilteredTodos(
                                                                                         page
                                                                                             .props
-                                                                                            .todos,
+                                                                                            .todos as Todo[],
                                                                                     );
                                                                                 }
                                                                             },
@@ -196,13 +204,17 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                 setTodos(
                                                                                     page
                                                                                         .props
-                                                                                        .todos,
+                                                                                        .todos as Todo[],
                                                                                 );
                                                                                 if (
                                                                                     isOnlyFlagged
                                                                                 ) {
                                                                                     setFilteredTodos(
-                                                                                        page.props.todos.filter(
+                                                                                        (
+                                                                                            page
+                                                                                                .props
+                                                                                                .todos as Todo[]
+                                                                                        ).filter(
                                                                                             (
                                                                                                 todo,
                                                                                             ) =>
@@ -214,7 +226,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                     setFilteredTodos(
                                                                                         page
                                                                                             .props
-                                                                                            .todos,
+                                                                                            .todos as Todo[],
                                                                                     );
                                                                                 }
                                                                             },
@@ -237,7 +249,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                 <Calendar
                                                                     mode="single"
                                                                     selected={
-                                                                        todo.deadline
+                                                                        todo.deadline as unknown as Date
                                                                     }
                                                                     onSelect={(
                                                                         date,
@@ -260,13 +272,17 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                         setTodos(
                                                                                             page
                                                                                                 .props
-                                                                                                .todos,
+                                                                                                .todos as Todo[],
                                                                                         );
                                                                                         if (
                                                                                             isOnlyFlagged
                                                                                         ) {
                                                                                             setFilteredTodos(
-                                                                                                page.props.todos.filter(
+                                                                                                (
+                                                                                                    page
+                                                                                                        .props
+                                                                                                        .todos as Todo[]
+                                                                                                ).filter(
                                                                                                     (
                                                                                                         todo,
                                                                                                     ) =>
@@ -278,7 +294,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                             setFilteredTodos(
                                                                                                 page
                                                                                                     .props
-                                                                                                    .todos,
+                                                                                                    .todos as Todo[],
                                                                                             );
                                                                                         }
                                                                                     },
@@ -334,13 +350,17 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                         setTodos(
                                                                                             page
                                                                                                 .props
-                                                                                                .todos,
+                                                                                                .todos as Todo[],
                                                                                         );
                                                                                         if (
                                                                                             isOnlyFlagged
                                                                                         ) {
                                                                                             setFilteredTodos(
-                                                                                                page.props.todos.filter(
+                                                                                                (
+                                                                                                    page
+                                                                                                        .props
+                                                                                                        .todos as Todo[]
+                                                                                                ).filter(
                                                                                                     (
                                                                                                         todo,
                                                                                                     ) =>
@@ -352,7 +372,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                             setFilteredTodos(
                                                                                                 page
                                                                                                     .props
-                                                                                                    .todos,
+                                                                                                    .todos as Todo[],
                                                                                             );
                                                                                         }
                                                                                     },
@@ -385,13 +405,17 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                         setTodos(
                                                                                             page
                                                                                                 .props
-                                                                                                .todos,
+                                                                                                .todos as Todo[],
                                                                                         );
                                                                                         if (
                                                                                             isOnlyFlagged
                                                                                         ) {
                                                                                             setFilteredTodos(
-                                                                                                page.props.todos.filter(
+                                                                                                (
+                                                                                                    page
+                                                                                                        .props
+                                                                                                        .todos as Todo[]
+                                                                                                ).filter(
                                                                                                     (
                                                                                                         todo,
                                                                                                     ) =>
@@ -403,7 +427,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                                             setFilteredTodos(
                                                                                                 page
                                                                                                     .props
-                                                                                                    .todos,
+                                                                                                    .todos as Todo[],
                                                                                             );
                                                                                         }
                                                                                     },
@@ -447,13 +471,17 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                         setTodos(
                                                                             page
                                                                                 .props
-                                                                                .todos,
+                                                                                .todos as Todo[],
                                                                         );
                                                                         if (
                                                                             isOnlyFlagged
                                                                         ) {
                                                                             setFilteredTodos(
-                                                                                page.props.todos.filter(
+                                                                                (
+                                                                                    page
+                                                                                        .props
+                                                                                        .todos as Todo[]
+                                                                                ).filter(
                                                                                     (
                                                                                         todo,
                                                                                     ) =>
@@ -465,7 +493,7 @@ const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
                                                                             setFilteredTodos(
                                                                                 page
                                                                                     .props
-                                                                                    .todos,
+                                                                                    .todos as Todo[],
                                                                             );
                                                                         }
                                                                     },

@@ -55,7 +55,7 @@ const Index = (props: {
             { keyword: keyword },
             {
                 onSuccess: (page) => {
-                    setEvents(page.props.events);
+                    setEvents(page.props.events as Event[]);
                 },
                 preserveState: true,
             },

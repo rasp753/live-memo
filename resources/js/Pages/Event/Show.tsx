@@ -175,8 +175,10 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                     {
                                                         onSuccess: (page) => {
                                                             setTodos(
-                                                                page.props.event
-                                                                    .todos,
+                                                                (
+                                                                    page.props
+                                                                        .event as Event
+                                                                ).todos,
                                                             );
                                                         },
                                                         preserveScroll: true,
@@ -205,9 +207,11 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                                         page,
                                                                     ) => {
                                                                         setTodos(
-                                                                            page
-                                                                                .props
-                                                                                .event
+                                                                            (
+                                                                                page
+                                                                                    .props
+                                                                                    .event as Event
+                                                                            )
                                                                                 .todos,
                                                                         );
                                                                     },
@@ -235,9 +239,11 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                                         page,
                                                                     ) => {
                                                                         setTodos(
-                                                                            page
-                                                                                .props
-                                                                                .event
+                                                                            (
+                                                                                page
+                                                                                    .props
+                                                                                    .event as Event
+                                                                            )
                                                                                 .todos,
                                                                         );
                                                                     },
@@ -258,7 +264,7 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                             <Calendar
                                                                 mode="single"
                                                                 selected={
-                                                                    todo.deadline
+                                                                    todo.deadline as unknown as Date
                                                                 }
                                                                 onSelect={(
                                                                     date,
@@ -278,9 +284,11 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                                                     page,
                                                                                 ) => {
                                                                                     setTodos(
-                                                                                        page
-                                                                                            .props
-                                                                                            .event
+                                                                                        (
+                                                                                            page
+                                                                                                .props
+                                                                                                .event as Event
+                                                                                        )
                                                                                             .todos,
                                                                                     );
                                                                                 },
@@ -331,9 +339,11 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                                                     page,
                                                                                 ) => {
                                                                                     setTodos(
-                                                                                        page
-                                                                                            .props
-                                                                                            .event
+                                                                                        (
+                                                                                            page
+                                                                                                .props
+                                                                                                .event as Event
+                                                                                        )
                                                                                             .todos,
                                                                                     );
                                                                                 },
@@ -363,9 +373,11 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                                                     page,
                                                                                 ) => {
                                                                                     setTodos(
-                                                                                        page
-                                                                                            .props
-                                                                                            .event
+                                                                                        (
+                                                                                            page
+                                                                                                .props
+                                                                                                .event as Event
+                                                                                        )
                                                                                             .todos,
                                                                                     );
                                                                                 },
@@ -403,10 +415,11 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                                     page,
                                                                 ) => {
                                                                     setTodos(
-                                                                        page
-                                                                            .props
-                                                                            .event
-                                                                            .todos,
+                                                                        (
+                                                                            page
+                                                                                .props
+                                                                                .event as Event
+                                                                        ).todos,
                                                                     );
                                                                 },
                                                                 preserveScroll:
@@ -452,8 +465,10 @@ const Show = (props: { auth: { user: User }; event: Event }) => {
                                                 {
                                                     onSuccess: (page) => {
                                                         setTodos(
-                                                            page.props.event
-                                                                .todos,
+                                                            (
+                                                                page.props
+                                                                    .event as Event
+                                                            ).todos,
                                                         );
                                                         setNewTodoName('');
                                                     },

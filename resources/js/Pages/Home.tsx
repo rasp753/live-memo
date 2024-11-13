@@ -150,7 +150,7 @@ const Index = (props: {
                                                             ) => {
                                                                 setTodos(
                                                                     page.props
-                                                                        .todos,
+                                                                        .todos as Todo[],
                                                                 );
                                                             },
                                                             preserveScroll:
@@ -193,7 +193,7 @@ const Index = (props: {
                                                                                 setTodos(
                                                                                     page
                                                                                         .props
-                                                                                        .todos,
+                                                                                        .todos as Todo[],
                                                                                 );
                                                                             },
                                                                         preserveScroll:
@@ -224,7 +224,7 @@ const Index = (props: {
                                                                                 setTodos(
                                                                                     page
                                                                                         .props
-                                                                                        .todos,
+                                                                                        .todos as Todo[],
                                                                                 );
                                                                             },
                                                                         preserveScroll:
@@ -246,7 +246,7 @@ const Index = (props: {
                                                                 <Calendar
                                                                     mode="single"
                                                                     selected={
-                                                                        todo.deadline
+                                                                        todo.deadline as unknown as Date
                                                                     }
                                                                     onSelect={(
                                                                         date,
@@ -269,7 +269,7 @@ const Index = (props: {
                                                                                         setTodos(
                                                                                             page
                                                                                                 .props
-                                                                                                .todos,
+                                                                                                .todos as Todo[],
                                                                                         );
                                                                                     },
                                                                                 preserveScroll:
@@ -324,7 +324,7 @@ const Index = (props: {
                                                                                         setTodos(
                                                                                             page
                                                                                                 .props
-                                                                                                .todos,
+                                                                                                .todos as Todo[],
                                                                                         );
                                                                                     },
                                                                                 preserveScroll:
@@ -356,7 +356,7 @@ const Index = (props: {
                                                                                         setTodos(
                                                                                             page
                                                                                                 .props
-                                                                                                .todos,
+                                                                                                .todos as Todo[],
                                                                                         );
                                                                                     },
                                                                                 preserveScroll:
@@ -399,8 +399,7 @@ const Index = (props: {
                                                                         setTodos(
                                                                             page
                                                                                 .props
-                                                                                .event
-                                                                                .todos,
+                                                                                .todos as Todo[],
                                                                         );
                                                                     },
                                                                     preserveScroll:
