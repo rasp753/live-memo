@@ -13,10 +13,10 @@ import {
     CardHeader,
     CardTitle,
 } from '@/Components/ui/card';
-
 import { Input } from '@/Components/ui/input';
-import { Event } from '@/types/Event';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+
+import { Event } from '@/types/Event';
 
 const Index = (props: {
     auth: { user: User };

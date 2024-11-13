@@ -39,4 +39,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/events/{event}/todos/{todo}', [TodoController::class, 'delete'])->name('todos.delete');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

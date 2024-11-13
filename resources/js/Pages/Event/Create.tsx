@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
 import { Calendar } from '@/Components/ui/calendar';
 import {
@@ -26,6 +27,7 @@ import {
     FormMessage,
 } from '@/Components/ui/form';
 import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
 import {
     Popover,
     PopoverContent,
@@ -35,9 +37,6 @@ import { Textarea } from '@/Components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { CaretSortIcon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { Calendar as CalendarIcon } from 'lucide-react';
-
-import { Badge } from '@/Components/ui/badge';
-import { Label } from '@/components/ui/label';
 
 import { EventSchema, eventTypes } from '@/types/Event';
 

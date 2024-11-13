@@ -110,12 +110,12 @@ class EventController extends Controller
                         $query->where('tags.id', $tag->id);
                     });
                 }
-            } else if (str_starts_with($keyword, '@')) {
-                $events = $events->where('venue', 'like', '%' . substr($keyword, 1) . '%');
-            } else if (str_starts_with($keyword, 'type:')) {
+            } elseif (str_starts_with($keyword, '@')) {
+                $events = $events->where('venue', 'like', '%'.substr($keyword, 1).'%');
+            } elseif (str_starts_with($keyword, 'type:')) {
                 $events = $events->where('type', substr($keyword, 5));
             } else {
-                $events = $events->where('name', 'like', '%' . $keyword . '%');
+                $events = $events->where('name', 'like', '%'.$keyword.'%');
             }
         }
 
