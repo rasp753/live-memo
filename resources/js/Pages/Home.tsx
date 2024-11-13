@@ -36,8 +36,6 @@ const Index = (props: {
 
     const [todos, setTodos] = useState(props.todos);
 
-    console.log(todos);
-
     return (
         <Authenticated>
             <div className="mx-auto my-4 max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8">
@@ -138,7 +136,7 @@ const Index = (props: {
                                                 checked={todo.done}
                                                 onCheckedChange={() => {
                                                     router.put(
-                                                        `/events/${event.id}/todos/${todo.id}`,
+                                                        `/events/${todo.event_id}/todos/${todo.id}`,
                                                         {
                                                             todo: {
                                                                 ...todo,
@@ -163,9 +161,13 @@ const Index = (props: {
                                             />
                                             <div className="mr-auto">
                                                 <div>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        {todo.event.name}
-                                                    </p>
+                                                    <Link
+                                                        href={`/events/${todo.event_id}`}
+                                                    >
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {todo.event.name}
+                                                        </p>
+                                                    </Link>
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <h3>{todo.name}</h3>
@@ -305,7 +307,7 @@ const Index = (props: {
                                                                         date,
                                                                     ) => {
                                                                         router.put(
-                                                                            `/events/${event.id}/todos/${todo.id}`,
+                                                                            `/events/${todo.event_id}/todos/${todo.id}`,
                                                                             {
                                                                                 todo: {
                                                                                     ...todo,
@@ -337,7 +339,7 @@ const Index = (props: {
                                                                     className="mx-3 my-2 w-56"
                                                                     onClick={() => {
                                                                         router.put(
-                                                                            `/events/${event.id}/todos/${todo.id}`,
+                                                                            `/events/${todo.event_id}/todos/${todo.id}`,
                                                                             {
                                                                                 todo: {
                                                                                     ...todo,
@@ -384,9 +386,13 @@ const Index = (props: {
                                                     <Button
                                                         variant="destructive"
                                                         onClick={() => {
-                                                            router.delete(
-                                                                `/events/${event.id}/todos/${todo.id}`,
+                                                            router.visit(
+                                                                `/events/${todo.event_id}/todos/${todo.id}`,
                                                                 {
+                                                                    method: 'delete',
+                                                                    data: {
+                                                                        from: route().current(),
+                                                                    },
                                                                     onSuccess: (
                                                                         page,
                                                                     ) => {

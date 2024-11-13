@@ -91,8 +91,8 @@ class EventController extends Controller
     {
         // 本日以降で直近のイベントと１ヶ月以内に期限が来るTodoを抽出して送信
         return Inertia::render('Home', [
-            'event' => $event->where('created_by', $request->user()->id)->whereDate('date', '>=', Carbon::yesterday()->toDateTimeString())->orderBy('date', 'asc')->with('tags')->first(),
-            'todos' => $todo->where('user_id', $request->user()->id)->whereDate('deadline', '>=', Carbon::yesterday()->subdays(30)->toDateTimeString())->whereDate('deadline', '<=', Carbon::yesterday()->toDateTimeString())->orderBy('deadline', 'desc')->with('event')->get(),
+            'event' => $event->where('created_by', $request->user()->id)->whereDate('date', '>=', Carbon::today()->toDateTimeString())->orderBy('date', 'asc')->with('tags')->first(),
+            'todos' => $todo->where('user_id', $request->user()->id)->whereDate('deadline', '>=', Carbon::today()->subdays(30)->toDateTimeString())->whereDate('deadline', '<=', Carbon::yesterday()->toDateTimeString())->orderBy('deadline', 'desc')->with('event')->get(),
         ]);
     }
 

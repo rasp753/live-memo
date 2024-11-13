@@ -34,8 +34,6 @@ import { Event } from '@/types/Event';
 const Show = (props: { auth: { user: User }; event: Event }) => {
     const { event } = props;
 
-    console.log(event.todos);
-
     const onEventDeleteButtonClicked = () => {
         router.delete(`/events/${event.id}`);
     };

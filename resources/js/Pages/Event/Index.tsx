@@ -49,8 +49,6 @@ const Index = (props: {
               }),
     );
 
-    console.log(props);
-
     const searchEvents = useDebouncedCallback((keyword: string) => {
         router.get(
             '/events/search',
