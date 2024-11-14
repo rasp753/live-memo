@@ -69,7 +69,7 @@ class TodoController extends Controller
     public function index(Request $request, Todo $todo)
     {
         return Inertia::render('Todo/Index', [
-            'todos' => $todo->where('user_id', $request->user()->id)->orderBy('deadline', 'desc')->with('event')->get(),
+            'todos' => $todo->where('user_id', $request->user()->id)->where('done', false)->orderBy('deadline', 'desc')->with('event')->get(),
         ]);
     }
 }

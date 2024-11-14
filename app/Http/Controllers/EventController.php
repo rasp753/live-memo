@@ -92,7 +92,7 @@ class EventController extends Controller
         // 本日以降で直近のイベントと１ヶ月以内に期限が来るTodoを抽出して送信
         return Inertia::render('Home', [
             'event' => $event->where('created_by', $request->user()->id)->whereDate('date', '>=', Carbon::today()->toDateTimeString())->orderBy('date', 'asc')->with('tags')->first(),
-            'todos' => $todo->where('user_id', $request->user()->id)->whereDate('deadline', '>=', Carbon::today()->subdays(30)->toDateTimeString())->whereDate('deadline', '<=', Carbon::yesterday()->toDateTimeString())->orderBy('deadline', 'desc')->with('event')->get(),
+            'todos' => $todo->where('user_id', $request->user()->id)->whereDate('deadline', '<=', Carbon::today()->adddays(30)->toDateTimeString())->where('done', false)->orderBy('deadline', 'desc')->with('event')->get(),
         ]);
     }
 
@@ -111,11 +111,11 @@ class EventController extends Controller
                     });
                 }
             } elseif (str_starts_with($keyword, '@')) {
-                $events = $events->where('venue', 'like', '%'.substr($keyword, 1).'%');
+                $events = $events->where('venue', 'like', '%' . substr($keyword, 1) . '%');
             } elseif (str_starts_with($keyword, 'type:')) {
                 $events = $events->where('type', substr($keyword, 5));
             } else {
-                $events = $events->where('name', 'like', '%'.$keyword.'%');
+                $events = $events->where('name', 'like', '%' . $keyword . '%');
             }
         }
 
