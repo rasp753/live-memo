@@ -49,6 +49,8 @@ const Index = (props: {
               }),
     );
 
+    console.log(events);
+
     const searchEvents = useDebouncedCallback((keyword: string) => {
         router.get(
             '/events/search',
@@ -56,8 +58,30 @@ const Index = (props: {
             {
                 onSuccess: (page) => {
                     setEvents(page.props.events as Event[]);
+                    setFilteredEvents(
+                        isShowingUpcomingEvents
+                            ? (page.props.events as Event[])
+                                  .filter((event) => {
+                                      return (
+                                          differenceInCalendarDays(
+                                              new Date(event.date),
+                                              new Date(),
+                                          ) >= 0
+                                      );
+                                  })
+                                  .toReversed()
+                            : (page.props.events as Event[]).filter((event) => {
+                                  return (
+                                      differenceInCalendarDays(
+                                          new Date(event.date),
+                                          new Date(),
+                                      ) < 0
+                                  );
+                              }),
+                    );
                 },
                 preserveState: true,
+                preserveScroll: true,
             },
         );
     }, 500);
