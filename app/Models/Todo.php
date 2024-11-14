@@ -21,7 +21,6 @@ class Todo extends Model
     }
 
     protected $fillable = [
-        'id',
         'user_id',
         'event_id',
         'name',

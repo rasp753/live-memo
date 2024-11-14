@@ -49,74 +49,89 @@ const Index = (props: {
                 </div>
                 <div className="space-y-4">
                     <div>
-                        <Link href={`/events/${event.id}`}>
-                            <Card>
-                                <div className="flex items-center">
-                                    <CardHeader className="mr-auto">
-                                        <CardTitle>次のイベント</CardTitle>
-                                        <CardTitle>{event.name}</CardTitle>
-                                        <CardDescription>
-                                            {new Date(
-                                                event.date,
-                                            ).toLocaleDateString()}
-                                        </CardDescription>
-                                        <div className="flex flex-wrap gap-2">
-                                            <Badge variant="default">
-                                                {event.type}
-                                            </Badge>
-                                            {event.tags.map((tag, index) => (
-                                                <Badge
-                                                    key={index}
-                                                    variant="outline"
-                                                >
-                                                    {typeof tag === 'string'
-                                                        ? tag
-                                                        : tag.name}
+                        {event && (
+                            <Link href={`/events/${event.id}`}>
+                                <Card>
+                                    <div className="flex items-center">
+                                        <CardHeader className="mr-auto">
+                                            <CardTitle>次のイベント</CardTitle>
+                                            <CardTitle>{event.name}</CardTitle>
+                                            <CardDescription>
+                                                {new Date(
+                                                    event.date,
+                                                ).toLocaleDateString()}
+                                            </CardDescription>
+                                            <div className="flex flex-wrap gap-2">
+                                                <Badge variant="default">
+                                                    {event.type}
                                                 </Badge>
-                                            ))}
+                                                {event.tags.map(
+                                                    (tag, index) => (
+                                                        <Badge
+                                                            key={index}
+                                                            variant="outline"
+                                                        >
+                                                            {typeof tag ===
+                                                            'string'
+                                                                ? tag
+                                                                : tag.name}
+                                                        </Badge>
+                                                    ),
+                                                )}
+                                            </div>
+                                        </CardHeader>
+                                        <div className="m-8 w-16 flex-col text-nowrap text-center">
+                                            {differenceInCalendarDays(
+                                                new Date(event.date),
+                                                new Date(),
+                                            ) < 0 ? (
+                                                <>
+                                                    <p className="text-xl">
+                                                        終了後
+                                                    </p>
+                                                    <p className="text-2xl">
+                                                        {differenceInCalendarDays(
+                                                            new Date(),
+                                                            new Date(
+                                                                event.date,
+                                                            ),
+                                                        )}
+                                                        日
+                                                    </p>
+                                                </>
+                                            ) : differenceInCalendarDays(
+                                                  new Date(event.date),
+                                                  new Date(),
+                                              ) === 0 ? (
+                                                <>
+                                                    <p className="text-2xl">
+                                                        本日
+                                                    </p>
+                                                    <p className="text-2xl">
+                                                        開催
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <p className="text-xl">
+                                                        あと
+                                                    </p>
+                                                    <p className="text-2xl">
+                                                        {differenceInCalendarDays(
+                                                            new Date(
+                                                                event.date,
+                                                            ),
+                                                            new Date(),
+                                                        )}
+                                                        日
+                                                    </p>
+                                                </>
+                                            )}
                                         </div>
-                                    </CardHeader>
-                                    <div className="m-8 w-16 flex-col text-nowrap text-center">
-                                        {differenceInCalendarDays(
-                                            new Date(event.date),
-                                            new Date(),
-                                        ) < 0 ? (
-                                            <>
-                                                <p className="text-xl">
-                                                    終了後
-                                                </p>
-                                                <p className="text-2xl">
-                                                    {differenceInCalendarDays(
-                                                        new Date(),
-                                                        new Date(event.date),
-                                                    )}
-                                                    日
-                                                </p>
-                                            </>
-                                        ) : differenceInCalendarDays(
-                                              new Date(event.date),
-                                              new Date(),
-                                          ) === 0 ? (
-                                            <>
-                                                <p className="text-2xl">本日</p>
-                                                <p className="text-2xl">開催</p>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <p className="text-xl">あと</p>
-                                                <p className="text-2xl">
-                                                    {differenceInCalendarDays(
-                                                        new Date(event.date),
-                                                        new Date(),
-                                                    )}
-                                                    日
-                                                </p>
-                                            </>
-                                        )}
                                     </div>
-                                </div>
-                            </Card>
-                        </Link>
+                                </Card>
+                            </Link>
+                        )}
                     </div>
                     <div>
                         <Card>
