@@ -9,6 +9,7 @@ use Inertia\Inertia;
 
 class TodoController extends Controller
 {
+    // Todo新規作成処理
     public function store(Request $request, Event $event, Todo $todo)
     {
         $event_id = $event->id;
@@ -18,6 +19,7 @@ class TodoController extends Controller
         $input['user_id'] = $user_id;
         $todo->fill($input)->save();
 
+        // 転移元によってリダイレクト先を変更
         if ($request->has('from')) {
             if ($request->from === 'events.show') {
                 return redirect()->route('events.show', ['event' => $event_id]);
@@ -31,11 +33,13 @@ class TodoController extends Controller
         return redirect()->route('events.show', ['event' => $event_id]);
     }
 
+    // Todo編集処理
     public function edit(Request $request, Event $event, Todo $todo)
     {
         $input = $request->todo;
         $todo->fill($input)->save();
 
+        // 転移元によってリダイレクト先を変更
         if ($request->has('from')) {
             if ($request->from === 'events.show') {
                 return redirect()->route('events.show', ['event' => $event->id]);
@@ -49,10 +53,12 @@ class TodoController extends Controller
         return redirect()->route('events.show', ['event' => $event->id]);
     }
 
+    // Todo削除処理
     public function delete(Request $request, Event $event, Todo $todo)
     {
         $todo->delete();
 
+        // 転移元によってリダイレクト先を変更
         if ($request->has('from')) {
             if ($request->from === 'events.show') {
                 return redirect()->route('events.show', ['event' => $event->id]);
@@ -66,6 +72,7 @@ class TodoController extends Controller
         return redirect()->route('events.show', ['event' => $event->id]);
     }
 
+    // Todo一覧表示
     public function index(Request $request, Todo $todo)
     {
         return Inertia::render('Todo/Index', [

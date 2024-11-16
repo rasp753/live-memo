@@ -32,8 +32,10 @@ const Index = (props: {
     event: Event;
     todos: Todo[];
 }) => {
+    // 表示するEvent
     const { event } = props;
 
+    // 表示するTodoのリスト
     const [todos, setTodos] = useState(props.todos);
 
     return (

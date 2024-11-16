@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { Todo } from './Todo';
 
+// イベントの型定義
 export type Event = {
     id: number;
     name: string;
@@ -13,6 +14,7 @@ export type Event = {
     todos: Todo[];
 };
 
+// イベント入力フォームのスキーマ
 export const EventSchema = z.object({
     name: z.string().min(1, { message: 'イベント名を入力してください' }),
     date: z.date().optional(),
@@ -22,6 +24,7 @@ export const EventSchema = z.object({
     memo: z.string().optional(),
 });
 
+// イベントの種類
 export const eventTypes = [
     { label: 'ライブ', value: 'live' },
     { label: '展示', value: 'exhibition' },

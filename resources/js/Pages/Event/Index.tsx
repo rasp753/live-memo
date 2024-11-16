@@ -23,11 +23,20 @@ const Index = (props: {
     events: Event[];
     keyword: string;
 }) => {
+    // 表示するイベント
     const [events, setEvents] = useState<Event[]>(props.events);
+
+    // 検索キーワード
     const [keyword, setKeyword] = useState(props.keyword ? props.keyword : '');
+
+    // 開催前・当日のイベントを表示するかどうか
     const [isShowingUpcomingEvents, setIsShowingUpcomingEvents] =
         useState(true);
+
+    // 表示するイベントの絞り込み・整形処理
     const [filteredEvents, setFilteredEvents] = useState<Event[]>(
+        // 開催前・当日のイベントを表示する時は開催日昇順に、
+        // 開催後のイベントを表示する時は開催日降順に並び替える
         isShowingUpcomingEvents
             ? events
                   .filter((event) => {
@@ -49,12 +58,15 @@ const Index = (props: {
               }),
     );
 
+    // イベントのインクリメンタルサーチの処理
+    // 過剰なリクエストを防ぐため、入力後500ms経過してからリクエストを送信する
     const searchEvents = useDebouncedCallback((keyword: string) => {
         router.get(
             '/events/search',
             { keyword: keyword },
             {
                 onSuccess: (page) => {
+                    // 検索結果を格納して、表示するイベントを絞りこむ
                     setEvents(page.props.events as Event[]);
                     setFilteredEvents(
                         isShowingUpcomingEvents
@@ -95,6 +107,7 @@ const Index = (props: {
                         <Link href="/events/create">新規イベント</Link>
                     </Button>
                 </div>
+
                 <div>
                     <div className="flex items-center">
                         <MagnifyingGlassIcon className="size-8" />
@@ -113,6 +126,7 @@ const Index = (props: {
                         exhibition, cafe, goods)
                     </p>
                 </div>
+
                 <div className="ml-8 flex gap-8">
                     {isShowingUpcomingEvents ? (
                         <>
@@ -162,6 +176,7 @@ const Index = (props: {
                         </>
                     )}
                 </div>
+
                 <div className="space-y-2">
                     {filteredEvents.map((event) => (
                         <div key={event.id}>

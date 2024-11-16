@@ -44,6 +44,11 @@ const Create = (props: {
     auth: { user: User };
     errors: Record<string, string>;
 }) => {
+    ///
+    /// フォーム関連処理
+    ///
+
+    // フォームの初期値とバリデーションスキーマを設定
     const form = useForm({
         resolver: zodResolver(EventSchema),
         defaultValues: {
@@ -55,19 +60,26 @@ const Create = (props: {
             memo: '',
         },
     });
-
+    // フォームの送信処理
     function onSubmit(values: z.infer<typeof EventSchema>) {
+        // フォームの入力値にタグを追加して送信
         const data = { ...values, tags };
         router.post('/events', data);
     }
 
+    ///
+    /// タグ関連処理
+    ///
+
+    // タグ入力欄でEnterキーが押されたときの処理
     function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+        // 変換中以外でEnterキーが押された場合のみ処理を実行
         if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
             event.preventDefault();
             addTag(event);
         }
     }
-
+    // タグを追加する処理
     function addTag(event: React.KeyboardEvent<HTMLInputElement>) {
         const input = event.target as HTMLInputElement;
         const value = input.value.toUpperCase();
@@ -80,9 +92,9 @@ const Create = (props: {
         input.value = '';
         setTagInputErrorMessage('');
     }
-
+    // タグ一覧State
     const [tags, setTags] = useState<string[]>([]);
-
+    // タグ入力エラーメッセージState
     const [tagInputErrorMessage, setTagInputErrorMessage] = useState('');
 
     return (
@@ -117,11 +129,11 @@ const Create = (props: {
                                 )}
                             />
 
+                            {/* タグ入力欄 */}
                             <div className="space-y-2">
                                 <Label className="block" htmlFor="tags">
                                     タグ
                                 </Label>
-
                                 <div
                                     id="tags"
                                     className="flex flex-wrap items-center gap-2"
@@ -213,7 +225,6 @@ const Create = (props: {
                                     </FormItem>
                                 )}
                             />
-
                             <FormField
                                 control={form.control}
                                 name="type"

@@ -20,9 +20,12 @@ import { Switch } from '@/Components/ui/switch';
 import { Todo } from '@/types/Todo';
 
 const Index = (props: { auth: { user: User }; todos: Todo[] }) => {
+    // 表示するTodoのリスト
     const [todos, setTodos] = useState(props.todos);
 
+    // フラグ付きのみ表示するかどうか
     const [isOnlyFlagged, setIsOnlyFlagged] = useState(false);
+    // フィルタされたTodoのリスト
     const [filteredTodos, setFilteredTodos] = useState(todos);
 
     return (

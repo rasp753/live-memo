@@ -20,6 +20,9 @@ class Tag extends Model
         return $this->belongsToMany(Event::class, 'event_tags', 'tag_id', 'event_id');
     }
 
+    /**
+     * Fillable
+     */
     protected $fillable = [
         'name',
     ];

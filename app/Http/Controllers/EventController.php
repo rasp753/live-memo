@@ -14,6 +14,7 @@ use Inertia\Response;
 
 class EventController extends Controller
 {
+    // イベント一覧表示
     public function index(Request $request, Event $event): Response
     {
         return Inertia::render('Event/Index', [
@@ -21,6 +22,7 @@ class EventController extends Controller
         ]);
     }
 
+    // イベント詳細表示
     public function show(Event $event): Response
     {
         return Inertia::render('Event/Show', [
@@ -28,25 +30,29 @@ class EventController extends Controller
         ]);
     }
 
+    // イベント作成画面表示
     public function create(): Response
     {
         return Inertia::render('Event/Create');
     }
 
+    // イベント新規作成処理
     public function store(EventRequest $request, Event $event): RedirectResponse
     {
         $input = $request->all();
         $date = new Carbon($request->date);
-        $input['date'] = $date->toDateTimeString();
+        $input['date'] = $date->toDateTimeString(); // DB用に整形
         $input['created_by'] = $request->user()->id;
         $input['updated_by'] = $request->user()->id;
         $event->fill($input)->save();
 
+        // タグ登録
         $this->setTagToEvent($event, $request->tags);
 
         return redirect()->route('events.show', ['event' => $event->id]);
     }
 
+    // イベント編集画面表示
     public function edit(Event $event): Response
     {
         return Inertia::render('Event/Edit', [
@@ -54,11 +60,12 @@ class EventController extends Controller
         ]);
     }
 
+    // イベント更新処理
     public function update(EventRequest $request, Event $event)
     {
         $input = $request->all();
         $date = new Carbon($request->date);
-        $input['date'] = $date->toDateTimeString();
+        $input['date'] = $date->toDateTimeString(); // DB用に整形
         $input['updated_by'] = $request->user()->id;
         $event->fill($input)->save();
 
@@ -67,6 +74,7 @@ class EventController extends Controller
         return redirect()->route('events.show', ['event' => $event->id]);
     }
 
+    // イベント削除処理
     public function delete(Request $request, Event $event)
     {
         $input['deleted_by'] = $request->user()->id;
@@ -76,6 +84,7 @@ class EventController extends Controller
         return redirect()->route('events.index');
     }
 
+    // イベントにタグを紐付ける
     public function setTagToEvent(Event $event, array $tagTexts): void
     {
         $event->tags()->detach();
@@ -87,6 +96,7 @@ class EventController extends Controller
         $event->tags()->attach($tags->pluck('id')->toArray());
     }
 
+    // ホーム画面表示
     public function home(Request $request, Event $event, Todo $todo): Response
     {
         // 本日以降で直近のイベントと１ヶ月以内に期限が来るTodoを抽出して送信
@@ -96,12 +106,13 @@ class EventController extends Controller
         ]);
     }
 
+    // イベント検索処理
     public function search(Request $request, Event $event): Response
     {
         $events = $event->where('created_by', $request->user()->id);
 
+        // スペース・カンマ区切りでAND検索
         $keywords = preg_split('/[\s,]+/', $request->keyword);
-
         foreach ($keywords as $keyword) {
             if (str_starts_with($keyword, '#')) {
                 $tag = Tag::where('name', substr($keyword, 1))->first();
@@ -119,11 +130,11 @@ class EventController extends Controller
             }
         }
 
+        // 開催日降順で返す
         $events = $events->orderBy('date', 'desc')->with('tags')->get();
-
         return Inertia::render('Event/Index', [
             'events' => $events,
-            'keyword' => $request->keyword,
+            'keyword' => $request->keyword, // 検索キーワードを保持用
         ]);
     }
 }

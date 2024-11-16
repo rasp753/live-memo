@@ -10,6 +10,7 @@ class Todo extends Model
 {
     use HasFactory;
 
+    // タイムスタンプを使用しない
     public $timestamps = false;
 
     /**
@@ -20,6 +21,9 @@ class Todo extends Model
         return $this->belongsTo(Event::class);
     }
 
+    /**
+     * Fillable
+     */
     protected $fillable = [
         'user_id',
         'event_id',
@@ -30,6 +34,9 @@ class Todo extends Model
         'memo',
     ];
 
+    /**
+     * Casts
+     */
     protected function casts(): array
     {
         return [

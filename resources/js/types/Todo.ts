@@ -1,5 +1,6 @@
 import { Event } from './Event';
 
+// Todoの型定義
 export type Todo = {
     id: number;
     user_id: number;
