@@ -4,7 +4,14 @@
 
 当日までの日数のカウントダウン機能や、チケット申し込みなどのTodo管理機能があります。
 
-<img src="./resources/js/Logo.png" style="zoom: 20%;" />
+<img src="./resources/js/Logo.png" style="zoom: 10%;" />
+
+## デプロイ先
+https://live-memo-307c4b082499.herokuapp.com/
+
+### テストアカウント
+ID/Email: demo@example.com
+PW: demodemo
 
 ## 使用技術
 
