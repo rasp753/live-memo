@@ -15,9 +15,7 @@ return [
     |
     */
 
-    // Login時にどうもエラーが出てしまうので、一旦全て許可するようにしておく
-    // 後に修正する
-    'paths' => ['*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
