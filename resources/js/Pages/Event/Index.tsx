@@ -1,6 +1,6 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
-import { Link, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { differenceInCalendarDays } from 'date-fns';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -98,6 +98,7 @@ const Index = (props: {
 
     return (
         <Authenticated>
+            <Head title="イベント一覧" />
             <div className="mx-auto my-4 max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8">
                 <div className="flex h-10 items-center">
                     <div className="mr-auto text-2xl">

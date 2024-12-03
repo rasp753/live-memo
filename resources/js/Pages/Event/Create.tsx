@@ -1,7 +1,7 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -99,6 +99,7 @@ const Create = (props: {
 
     return (
         <Authenticated>
+            <Head title="新規イベント作成" />
             <div className="mx-auto my-4 max-w-7xl space-y-4 px-4 sm:px-6 lg:px-8">
                 <div className="flex h-10 items-center">
                     <div className="text-2xl">
